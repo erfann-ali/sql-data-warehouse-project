@@ -4,6 +4,11 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+/*
+==================================================================
+DDL Script: Create Silver Tables
+==================================================================
+*/
 ALTER   PROCEDURE [silver].[ddl_silver] AS
 BEGIN
 
