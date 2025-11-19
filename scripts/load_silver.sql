@@ -4,6 +4,11 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+/*
+=======================================================
+Stored Procedure: Load Silver Layer (Bronze -> Silver)
+=======================================================
+*/
 ALTER   PROCEDURE [silver].[load_silver] AS
 BEGIN
 	DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME;
