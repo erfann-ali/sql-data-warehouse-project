@@ -1,6 +1,6 @@
 /*
 ===============================================================================
-Quality Checks
+Quality Checks for Silver
 ===============================================================================
 */
 
@@ -8,7 +8,6 @@ Quality Checks
 -- Checking 'silver.crm_cust_info'
 -- ====================================================================
 -- Check for NULLs or Duplicates in Primary Key
--- Expectation: No Results
 SELECT 
     cst_id,
     COUNT(*) 
@@ -17,7 +16,6 @@ GROUP BY cst_id
 HAVING COUNT(*) > 1 OR cst_id IS NULL;
 
 -- Check for Unwanted Spaces
--- Expectation: No Results
 SELECT 
     cst_key 
 FROM silver.crm_cust_info
@@ -32,7 +30,6 @@ FROM silver.crm_cust_info;
 -- Checking 'silver.crm_prd_info'
 -- ====================================================================
 -- Check for NULLs or Duplicates in Primary Key
--- Expectation: No Results
 SELECT 
     prd_id,
     COUNT(*) 
@@ -41,14 +38,12 @@ GROUP BY prd_id
 HAVING COUNT(*) > 1 OR prd_id IS NULL;
 
 -- Check for Unwanted Spaces
--- Expectation: No Results
 SELECT 
     prd_nm 
 FROM silver.crm_prd_info
 WHERE prd_nm != TRIM(prd_nm);
 
 -- Check for NULLs or Negative Values in Cost
--- Expectation: No Results
 SELECT 
     prd_cost 
 FROM silver.crm_prd_info
@@ -60,7 +55,6 @@ SELECT DISTINCT
 FROM silver.crm_prd_info;
 
 -- Check for Invalid Date Orders (Start Date > End Date)
--- Expectation: No Results
 SELECT 
     * 
 FROM silver.crm_prd_info
@@ -70,7 +64,6 @@ WHERE prd_end_dt < prd_start_dt;
 -- Checking 'silver.crm_sales_details'
 -- ====================================================================
 -- Check for Invalid Dates
--- Expectation: No Invalid Dates
 SELECT 
     NULLIF(sls_due_dt, 0) AS sls_due_dt 
 FROM bronze.crm_sales_details
@@ -80,7 +73,6 @@ WHERE sls_due_dt <= 0
     OR sls_due_dt < 19000101;
 
 -- Check for Invalid Date Orders (Order Date > Shipping/Due Dates)
--- Expectation: No Results
 SELECT 
     * 
 FROM silver.crm_sales_details
@@ -88,7 +80,6 @@ WHERE sls_order_dt > sls_ship_dt
    OR sls_order_dt > sls_due_dt;
 
 -- Check Data Consistency: Sales = Quantity * Price
--- Expectation: No Results
 SELECT DISTINCT 
     sls_sales,
     sls_quantity,
@@ -107,7 +98,6 @@ ORDER BY sls_sales, sls_quantity, sls_price;
 -- Checking 'silver.erp_cust_az12'
 -- ====================================================================
 -- Identify Out-of-Range Dates
--- Expectation: Birthdates between 1924-01-01 and Today
 SELECT DISTINCT 
     bdate 
 FROM silver.erp_cust_az12
@@ -132,7 +122,6 @@ ORDER BY cntry;
 -- Checking 'silver.erp_px_cat_g1v2'
 -- ====================================================================
 -- Check for Unwanted Spaces
--- Expectation: No Results
 SELECT 
     * 
 FROM silver.erp_px_cat_g1v2
